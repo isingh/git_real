@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'coffee-rails', '~> 4.0.0'
+gem 'figaro'
 gem 'github_api'
 gem 'jquery-rails'
 gem 'pg'
