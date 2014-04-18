@@ -29,6 +29,18 @@ module UserSession
   end
 
   def is_logged_in?
-    session[:gu].present?
+    session[:guh].present?
+  end
+
+  def current_user_profile
+    @current_user ||= GithubProfile.where(handle: session[:guh]).first
+  end
+
+  def prompt_for_auth
+    redirect_to login_path unless is_logged_in?
+  end
+
+  def clear_session
+    reset_session
   end
 end

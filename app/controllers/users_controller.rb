@@ -10,10 +10,24 @@ class UsersController < ApplicationController
 
   def handle_auth
     oauth_token = user_oauth_token
-    raise "Unable to authorize" unless oauth_token
+    unless oauth_token
+      flash[:error] = "Unable to login via Github"
+      redirect_to login_path and return
+    end
 
     initiate_session(oauth_token)
+    flash[:success] = "You have successfully logged in"
     redirect_to '/'
+  end
+
+  def login
+  end
+
+  def logout
+    clear_session
+
+    flash[:info] = "You have been logged out"
+    redirect_to login_path
   end
 
   private
