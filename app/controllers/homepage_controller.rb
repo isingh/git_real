@@ -10,6 +10,6 @@ class HomepageController < ApplicationController
 
   def repos
     @repo_name = params[:repo_name]
-    @prs = current_github_user.pull_requests(current_github_user.handle, @repo_name)
+    @friends = current_github_user.friend_scores3(current_github_user.handle, @repo_name)
   end
 end
