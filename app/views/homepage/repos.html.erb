@@ -1,0 +1,12 @@
+<h2> <%= @repo_name %> </h2>
+
+<table class="table">
+  <% @prs.each do |pull_request| %>
+    <tr>
+      <td>
+        <%= pull_request.title %> (#<%= pull_request.number %>)
+      </td>
+    </tr>
+  <% end %>
+</table>
+

@@ -1,3 +1,5 @@
+require 'githubber'
+
 class ApplicationController < ActionController::Base
   include ActionView::Helpers::OutputSafetyHelper
   include ActionView::Helpers::TagHelper
@@ -40,5 +42,9 @@ class ApplicationController < ActionController::Base
       end
     end
     flash_messages.join("\n").html_safe
+  end
+
+  def current_github_user
+    @current_github_user ||= Githubber::User.new(current_user_profile.oauth_token)
   end
 end
