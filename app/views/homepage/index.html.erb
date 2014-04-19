@@ -1,1 +1,14 @@
 You are now logged in, <%= current_user_profile.name %>
+
+<br />
+
+<table class="table">
+  <% @repos.each do |repo| %>
+    <tr>
+      <td>
+        <a href="<%= repo_show_path(repo.name) %>">
+        <%= repo.name %>
+      </td>
+    </tr>
+  <% end %>
+</table>
