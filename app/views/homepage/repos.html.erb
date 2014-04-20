@@ -1,12 +1,73 @@
 <h2> <%= @repo_name %> </h2>
 
+<hr />
+
+<h3>Number of Pull Requests By User</h3>
 <table class="table">
-  <% @prs.each do |pull_request| %>
+  <% @stats[:number_of_prs_by_user].each do |user, num| %>
     <tr>
       <td>
-        <%= pull_request.title %> (#<%= pull_request.number %>)
+        <%= user %>
       </td>
-    </tr>
+      <td>
+        <%= num %>
+      </td>
+    </td>
   <% end %>
 </table>
+
+<hr />
+
+<h3>Commenters</h3>
+<table class="table">
+  <tr>
+    <th>
+      Handle
+    </th>
+    <th>
+      Num PRs commented on
+    </th>
+    <th>
+      Total Comments
+    </th>
+    <th>
+      Avg Comments per PR
+    </th>
+    <th>
+      % of your PRs they commented
+    </th>
+    <th>
+      % of their PRs you commented on
+    </th>
+  </tr>
+  <% if @stats[:unique_commenters_by_user][@my_handle] %>
+    <% @stats[:unique_commenters_by_user][@my_handle].each do |handle, num_comments| %>
+      <tr>
+        <td>
+          <%= handle %>
+        </td>
+        <td>
+          <%= num_comments %>
+        </td>
+        <td>
+          <%= @stats[:comments_for_user][@my_handle][handle] %>
+        </td>
+        <td>
+          <%= @stats[:comments_for_user][@my_handle][handle].to_f / num_comments %>
+        </td>
+        <td>
+          <%= (num_comments * 100.00) / @stats[:number_of_prs_by_user][@my_handle] %>
+        </td>
+        <td>
+          <% if @stats[:unique_commenters_by_user][handle] && @stats[:number_of_prs_by_user][handle] %>
+            <%= (@stats[:unique_commenters_by_user][handle][@my_handle].to_f * 100.00) / @stats[:number_of_prs_by_user][handle] %>
+          <% else %>
+            0
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
+
 
