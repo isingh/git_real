@@ -10,6 +10,7 @@ class HomepageController < ApplicationController
 
   def repos
     @repo_name = params[:repo_name]
-    @prs = current_github_user.pull_requests(current_github_user.handle, @repo_name)
+    @my_handle = current_github_user.handle
+    @stats = current_github_user.stats(@my_handle, @repo_name)
   end
 end

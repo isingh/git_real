@@ -6,14 +6,6 @@ module Githubber
       github_api.repos.all(per_page: 10000)
     end
 
-    def pull_requests(handle, repo_name)
-      prs = []
-      possible_repos(handle, repo_name).each do |h, r|
-        prs.concat(all_pull_requests(h,r))
-      end
-      prs
-    end
-
     def stats(handle, repo_name)
       prs_by_user = {}
       number_of_prs_by_user = {}
