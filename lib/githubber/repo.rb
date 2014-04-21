@@ -10,6 +10,7 @@ module Githubber
       prs_by_user = {}
       number_of_prs_by_user = {}
       unique_commenters_by_user = {}
+      number_of_mentions_by_user = {}
 
       possible_repos(handle, repo_name).each do |h, r|
         all_pull_requests(h, r).each do |pr|
@@ -25,6 +26,14 @@ module Githubber
             commenters.add(commenting_user)
             existing_comments = prs_by_user[user][commenting_user] || 0
             prs_by_user[user][commenting_user] = existing_comments + 1
+
+            # find mentions in comment
+            users = comment.body.scan(/\@\S*/)
+            users.each do |user|
+              user[0] = ''
+              num_mentions = number_of_mentions_by_user[user] || 0
+              number_of_mentions_by_user[user] = num_mentions + 1
+            end
           end
 
           commenters.each do |commenter|
@@ -40,7 +49,8 @@ module Githubber
       {
         comments_for_user: prs_by_user,
         number_of_prs_by_user: number_of_prs_by_user,
-        unique_commenters_by_user: unique_commenters_by_user
+        unique_commenters_by_user: unique_commenters_by_user,
+        number_of_mentions_by_user: number_of_mentions_by_user
       }
     end
 

@@ -28,6 +28,9 @@
       Num PRs commented on
     </th>
     <th>
+      Num of mentions
+    </th>
+    <th>
       Total Comments
     </th>
     <th>
@@ -48,6 +51,9 @@
         </td>
         <td>
           <%= num_comments %>
+        </td>
+        <td>
+          <%= @stats[:number_of_mentions_by_user][handle] %>
         </td>
         <td>
           <%= @stats[:comments_for_user][@my_handle][handle] %>
