@@ -4,6 +4,17 @@
 
 <h3>Number of Pull Requests By User</h3>
 <table class="table">
+  <tr>
+    <th>
+      Handle
+    </th>
+    <th>
+      Numer of PRs
+    </th>
+    <th>
+      % of total
+    </th>
+  </tr>
   <% @stats[:number_of_prs_by_user].each do |user, num| %>
     <tr>
       <td>
@@ -11,6 +22,9 @@
       </td>
       <td>
         <%= num %>
+      </td>
+      <td>
+        <%= num.to_f / @stats[:total_prs] %>
       </td>
     </td>
   <% end %>
@@ -69,5 +83,56 @@
     <% end %>
   <% end %>
 </table>
+
+<hr />
+
+<h3>Mentions</h3>
+<table class="table">
+  <tr>
+  	<th>
+      Handle
+    </th>
+    <th>
+      Num of mentions
+    </th>
+	<th>
+      Num of times they pinged you
+    </th>
+    <th>
+      Num of times you pinged them
+    </th>
+  </tr>
+  <% if @stats[:unique_commenters_by_user][@my_handle] %>
+    <% @stats[:unique_commenters_by_user][@my_handle].each do |handle, num_comments| %>
+      <tr>
+      	<td>
+          <%= handle %>
+        </td>
+        <td>
+          <% if @stats[:number_of_mentions][handle] %>
+            <%= @stats[:number_of_mentions][handle] %>
+          <% else %>
+            0
+          <% end %>
+        </td>
+        <td>
+          <% if @stats[:mentions_by_user][handle] && @stats[:mentions_by_user][handle][@my_handle] %>
+            <%= @stats[:mentions_by_user][handle][@my_handle] %>
+          <% else %>
+            0
+          <% end %>
+        </td>
+        <td>
+          <% if @stats[:mentions_by_user][@my_handle] && @stats[:mentions_by_user][@my_handle][handle] %>
+            <%= @stats[:mentions_by_user][@my_handle][handle] %>
+          <% else %>
+            0
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
+
 
 
