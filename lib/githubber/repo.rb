@@ -13,14 +13,14 @@ module Githubber
       unique_commenters_by_user = {}
       number_of_mentions = {}
       mentions_by_user = {}
-      counter = 0;
+      total_prs = 0;
 
       possible_repos(handle, repo_name).each do |h, r|
         puts h + "/" + r
         all_pull_requests(h, r).each do |pr|
-          counter = counter + 1
+          total_prs = total_prs + 1
           user = pr.user.login
-          puts counter.to_s + ") " + pr.title + ", by: " + user
+          puts total_prs.to_s + ") " + pr.title + ", by: " + user
           prs_by_user[user] = {} unless prs_by_user[user]
 
           num_prs = number_of_prs_by_user[user] || 0
@@ -63,7 +63,8 @@ module Githubber
         number_of_prs_by_user: number_of_prs_by_user,
         unique_commenters_by_user: unique_commenters_by_user,
         number_of_mentions: number_of_mentions,
-        mentions_by_user: mentions_by_user
+        mentions_by_user: mentions_by_user,
+        total_prs: total_prs
       }
     end
 

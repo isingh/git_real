@@ -4,6 +4,17 @@
 
 <h3>Number of Pull Requests By User</h3>
 <table class="table">
+  <tr>
+    <th>
+      Handle
+    </th>
+    <th>
+      Numer of PRs
+    </th>
+    <th>
+      % of total
+    </th>
+  </tr>
   <% @stats[:number_of_prs_by_user].each do |user, num| %>
     <tr>
       <td>
@@ -11,6 +22,9 @@
       </td>
       <td>
         <%= num %>
+      </td>
+      <td>
+        <%= num.to_f / @stats[:total_prs] %>
       </td>
     </td>
   <% end %>
