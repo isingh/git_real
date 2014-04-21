@@ -28,15 +28,6 @@
       Num PRs commented on
     </th>
     <th>
-      Num of mentions
-    </th>
-	<th>
-      Num of times I pinged them
-    </th>
-    <th>
-      Num of times they pinged me
-    </th>
-    <th>
       Total Comments
     </th>
     <th>
@@ -59,6 +50,49 @@
           <%= num_comments %>
         </td>
         <td>
+          <%= @stats[:comments_for_user][@my_handle][handle] %>
+        </td>
+        <td>
+          <%= @stats[:comments_for_user][@my_handle][handle].to_f / num_comments %>
+        </td>
+        <td>
+          <%= (num_comments * 100.00) / @stats[:number_of_prs_by_user][@my_handle] %>
+        </td>
+        <td>
+          <% if @stats[:unique_commenters_by_user][handle] && @stats[:number_of_prs_by_user][handle] %>
+            <%= (@stats[:unique_commenters_by_user][handle][@my_handle].to_f * 100.00) / @stats[:number_of_prs_by_user][handle] %>
+          <% else %>
+            0
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
+
+<h3>Mentions</h3>
+<table class="table">
+  <tr>
+  	<th>
+      Handle
+    </th>
+    <th>
+      Num of mentions
+    </th>
+	<th>
+      Num of times I pinged them
+    </th>
+    <th>
+      Num of times they pinged me
+    </th>
+  </tr>
+  <% if @stats[:unique_commenters_by_user][@my_handle] %>
+    <% @stats[:unique_commenters_by_user][@my_handle].each do |handle, num_comments| %>
+      <tr>
+      	<td>
+          <%= handle %>
+        </td>
+        <td>
           <% if @stats[:number_of_mentions][handle] %>
             <%= @stats[:number_of_mentions][handle] %>
           <% else %>
@@ -79,25 +113,10 @@
             0
           <% end %>
         </td>
-        <td>
-          <%= @stats[:comments_for_user][@my_handle][handle] %>
-        </td>
-        <td>
-          <%= @stats[:comments_for_user][@my_handle][handle].to_f / num_comments %>
-        </td>
-        <td>
-          <%= (num_comments * 100.00) / @stats[:number_of_prs_by_user][@my_handle] %>
-        </td>
-        <td>
-          <% if @stats[:unique_commenters_by_user][handle] && @stats[:number_of_prs_by_user][handle] %>
-            <%= (@stats[:unique_commenters_by_user][handle][@my_handle].to_f * 100.00) / @stats[:number_of_prs_by_user][handle] %>
-          <% else %>
-            0
-          <% end %>
-        </td>
       </tr>
     <% end %>
   <% end %>
 </table>
+
 
 
