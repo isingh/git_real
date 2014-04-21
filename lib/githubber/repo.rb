@@ -7,14 +7,18 @@ module Githubber
     end
 
     def stats(handle, repo_name)
+
       prs_by_user = {}
       number_of_prs_by_user = {}
       unique_commenters_by_user = {}
-      number_of_mentions_by_user = {}
+      number_of_mentions = {}
+      mentions_by_user = {}
 
       possible_repos(handle, repo_name).each do |h, r|
+        puts h + "/" + r
         all_pull_requests(h, r).each do |pr|
           user = pr.user.login
+          puts "On " + pr.title + ", by: " + user
           prs_by_user[user] = {} unless prs_by_user[user]
 
           num_prs = number_of_prs_by_user[user] || 0
@@ -23,16 +27,22 @@ module Githubber
           commenters = Set.new
           comments_for_pr(pr.number, h, r).each do |comment|
             commenting_user = comment.user.login
+            puts "  comment by: " + commenting_user
             commenters.add(commenting_user)
             existing_comments = prs_by_user[user][commenting_user] || 0
             prs_by_user[user][commenting_user] = existing_comments + 1
 
             # find mentions in comment
             users = comment.body.scan(/\@\S*/)
-            users.each do |user|
-              user[0] = ''
-              num_mentions = number_of_mentions_by_user[user] || 0
-              number_of_mentions_by_user[user] = num_mentions + 1
+            users.each do |pinged_user|
+              pinged_user[0] = ''
+              puts "    mention of: " + pinged_user
+              num_mentions = number_of_mentions[pinged_user] || 0
+              number_of_mentions[pinged_user] = num_mentions + 1
+
+              mentions_by_user[commenting_user] = {} unless mentions_by_user[commenting_user]
+              num_of_pings = mentions_by_user[commenting_user][pinged_user] || 0
+              mentions_by_user[commenting_user][pinged_user] = num_of_pings + 1
             end
           end
 
@@ -50,7 +60,8 @@ module Githubber
         comments_for_user: prs_by_user,
         number_of_prs_by_user: number_of_prs_by_user,
         unique_commenters_by_user: unique_commenters_by_user,
-        number_of_mentions_by_user: number_of_mentions_by_user
+        number_of_mentions: number_of_mentions,
+        mentions_by_user: mentions_by_user
       }
     end
 

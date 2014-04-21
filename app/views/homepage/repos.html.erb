@@ -30,6 +30,12 @@
     <th>
       Num of mentions
     </th>
+	<th>
+      Num of times I pinged them
+    </th>
+    <th>
+      Num of times they pinged me
+    </th>
     <th>
       Total Comments
     </th>
@@ -53,7 +59,25 @@
           <%= num_comments %>
         </td>
         <td>
-          <%= @stats[:number_of_mentions_by_user][handle] %>
+          <% if @stats[:number_of_mentions][handle] %>
+            <%= @stats[:number_of_mentions][handle] %>
+          <% else %>
+            0
+          <% end %>
+        </td>
+        <td>
+          <% if @stats[:mentions_by_user][handle] && @stats[:mentions_by_user][handle][@my_handle] %>
+            <%= @stats[:mentions_by_user][handle][@my_handle] %>
+          <% else %>
+            0
+          <% end %>
+        </td>
+        <td>
+          <% if @stats[:mentions_by_user][@my_handle] && @stats[:mentions_by_user][@my_handle][handle] %>
+            <%= @stats[:mentions_by_user][@my_handle][handle] %>
+          <% else %>
+            0
+          <% end %>
         </td>
         <td>
           <%= @stats[:comments_for_user][@my_handle][handle] %>
